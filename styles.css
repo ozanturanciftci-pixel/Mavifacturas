@@ -579,7 +579,7 @@ input[disabled], select[disabled], textarea[disabled] {
   padding-right: 4px;
 }
 #settlementTable tfoot td:first-child {
-  text-align: right;
+  text-align: left;
 }
 #differenceLabel {
   min-width: 220px;
