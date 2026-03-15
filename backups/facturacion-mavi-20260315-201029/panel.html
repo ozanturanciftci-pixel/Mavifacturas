@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mavi Control Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Nunito+Sans:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-wave"></div>
+
+    <main class="panel-layout">
+      <header class="panel-header card">
+        <div>
+          <p class="eyebrow">Mavi Studio</p>
+          <h1>Control Panel</h1>
+          <p class="lead">Bu ekran sadece giris yapan kullaniciya acik.</p>
+        </div>
+        <div class="panel-header-actions">
+          <button id="backBtn" class="btn ghost" type="button">Goruntuleme Sayfasi</button>
+          <button id="logoutBtn" class="btn" type="button">Cikis</button>
+        </div>
+      </header>
+
+      <section class="controls card">
+        <div class="tabs" id="periodTabs"></div>
+        <div class="toolbar">
+          <button id="addInvoiceBtn" class="btn" type="button">+ Nueva factura</button>
+          <button id="addSettlementBtn" class="btn ghost" type="button">+ Nuevo ajuste</button>
+          <button id="exportBtn" class="btn ghost" type="button">Exportar JSON</button>
+          <label class="btn ghost upload-label" for="importInput">Importar JSON</label>
+          <input id="importInput" type="file" accept="application/json" hidden />
+        </div>
+      </section>
+
+      <section class="card table-card">
+        <h2>Facturas (edicion)</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Titulo</th>
+                <th>Cliente</th>
+                <th>N Factura</th>
+                <th>Base (€)</th>
+                <th>+ IVA (€)</th>
+                <th>Emitida por</th>
+                <th>Emision</th>
+                <th>Vencimiento</th>
+                <th>Estado</th>
+                <th>Pagado (€)</th>
+                <th>Saldo (€)</th>
+                <th>Notas</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="invoiceBody"></tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3">Totales</td>
+                <td id="totalBase"></td>
+                <td id="totalWithVat"></td>
+                <td colspan="4"></td>
+                <td id="totalPaid"></td>
+                <td id="totalBalance"></td>
+                <td colspan="2"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </section>
+
+      <section class="card table-card">
+        <h2>Entre nosotras (edicion)</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>N Factura</th>
+                <th>Importe (€)</th>
+                <th>Estado</th>
+                <th>Liquidacion</th>
+                <th>Debe a Amaia (€)</th>
+                <th>Debe a Oihane (€)</th>
+                <th>Nota</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="settlementBody"></tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">Totales</td>
+                <td id="totalAmaia"></td>
+                <td id="totalOihane"></td>
+                <td colspan="2" id="differenceLabel"></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="data-service.js"></script>
+    <script src="panel.js"></script>
+  </body>
+</html>

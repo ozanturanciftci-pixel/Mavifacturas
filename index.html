@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mavi Studio · Facturación</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,600&family=Montserrat:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="bg-layer"></div>
+
+    <main class="app">
+      <header class="topbar">
+        <div class="brand-left">
+          <img src="mavi-eye.svg" alt="Mavi" class="eye-logo" />
+        </div>
+        <div class="brand-right">Mavi Studio</div>
+      </header>
+
+      <section class="hero">
+        <p class="hero-italic">Tienes facturas, además,</p>
+        <h1>SABES CÓMO CONTARLAS</h1>
+      </section>
+
+      <section class="tabs-wrap card">
+        <nav class="main-tabs" id="mainTabs">
+          <button class="main-tab active" data-tab="resumen">Resumen</button>
+          <button class="main-tab" data-tab="facturacion">Cliente Facturación</button>
+          <button class="main-tab" data-tab="entre">Entre Nosotras</button>
+        </nav>
+      </section>
+
+      <section id="tab-resumen" class="tab-panel active">
+        <section class="stats" id="summaryStats"></section>
+        <section class="card chart-card">
+          <div class="card-head"><h2>Últimos meses</h2></div>
+          <div id="yearlyChart" class="chart"></div>
+        </section>
+        <section class="card fun-card">
+          <div class="card-head"><h2>Entre Nosotras · Balance total</h2></div>
+          <div id="funBalance" class="fun-balance"></div>
+        </section>
+      </section>
+
+      <section id="tab-facturacion" class="tab-panel">
+        <section class="card table-card">
+          <div class="card-head wrap">
+            <h2>Facturas de clientes</h2>
+            <div class="actions">
+              <button class="btn alt" id="toggleInvoiceEditBtn" type="button">Editar</button>
+              <button class="btn" id="addInvoiceBtn" type="button">+ Nueva factura</button>
+            </div>
+          </div>
+
+          <div class="month-bar">
+            <div class="month-tabs" id="monthTabsFact"></div>
+          </div>
+
+          <div class="table-wrap">
+            <table id="invoiceTable">
+              <thead>
+                <tr>
+                  <th>Nº</th><th>Cliente</th><th>Nº Factura</th><th>Base (€)</th><th>Total + IVA (€)</th>
+                  <th>Emitida por</th><th class="col-date">Emisión</th><th class="col-date">Vencimiento</th><th>Estado</th><th>Pagado (€)</th>
+                  <th>Saldo (€)</th><th class="col-notas">Notas</th><th></th>
+                </tr>
+              </thead>
+              <tbody id="invoiceBody"></tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="3">Totales del mes</td><td id="totalBase"></td><td id="totalAmount"></td>
+                  <td colspan="4"></td><td id="totalPaid"></td><td id="totalBalance"></td><td colspan="2"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="tab-entre" class="tab-panel">
+        <section class="card table-card">
+          <div class="card-head wrap">
+            <h2>Liquidación interna</h2>
+            <div class="actions">
+              <button class="btn alt" id="toggleSettlementEditBtn" type="button">Editar</button>
+              <button class="btn" id="addSettlementBtn" type="button">+ Nueva fila</button>
+            </div>
+          </div>
+
+          <div class="month-bar">
+            <div class="month-tabs" id="monthTabsEntre"></div>
+          </div>
+
+          <div class="table-wrap">
+            <table id="settlementTable">
+              <thead>
+                <tr>
+                  <th>Cliente</th><th>Nº Factura</th><th>Importe (€)</th><th>Estado</th><th>Liquidación</th>
+                  <th>Debe a Amaia (€)</th><th>Debe a Oihane (€)</th><th>Nota</th><th></th>
+                </tr>
+              </thead>
+              <tbody id="settlementBody"></tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="5">Totales del mes</td><td id="totalAmaia"></td><td id="totalOihane"></td>
+                  <td colspan="2" id="differenceLabel"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
