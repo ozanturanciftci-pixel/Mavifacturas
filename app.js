@@ -351,7 +351,8 @@ function renderSettlements() {
   const rows = getSettlementsByMonth();
   const disabled = !state.editSettlements ? "disabled" : "";
 
-  settlementBodyEl.innerHTML = rows.map((item) => `<tr data-id="${item.id}">
+  settlementBodyEl.innerHTML = rows.map((item, index) => `<tr data-id="${item.id}">
+    <td>${index + 1}</td>
     <td><input ${disabled} data-field="client" value="${esc(item.client)}"></td>
     <td><input ${disabled} data-field="invoiceNo" value="${esc(item.invoiceNo)}"></td>
     <td><input ${disabled} data-field="amount" type="number" step="0.01" value="${num(item.amount)}"></td>
