@@ -323,13 +323,13 @@ function renderInvoices() {
       <td>${idx + 1}</td>
       <td><input ${disabled} data-field="client" value="${esc(item.client)}"></td>
       <td><input ${disabled} data-field="invoiceNo" value="${esc(item.invoiceNo)}"></td>
-      <td><input ${disabled} data-field="baseAmount" type="number" step="0.01" value="${num(item.baseAmount)}"></td>
-      <td><input ${disabled} data-field="totalAmount" type="number" step="0.01" value="${num(item.totalAmount)}"></td>
+      <td>${state.editInvoices ? `<input data-field="baseAmount" type="number" step="0.01" value="${num(item.baseAmount)}">` : `<div class="money-preview">${money(item.baseAmount)}</div>`}</td>
+      <td>${state.editInvoices ? `<input data-field="totalAmount" type="number" step="0.01" value="${num(item.totalAmount)}">` : `<div class="money-preview">${money(item.totalAmount)}</div>`}</td>
       <td><select ${disabled} data-field="issuedBy">${opt(item.issuedBy, "")}${opt(item.issuedBy, "Amaia")}${opt(item.issuedBy, "Oihane")}</select></td>
       <td class="col-date"><input ${disabled} data-field="issueDate" type="date" value="${item.issueDate || ""}"></td>
       <td class="col-date"><input ${disabled} data-field="dueDate" type="date" value="${item.dueDate || ""}"></td>
       <td><select ${disabled} data-field="status">${opt(item.status, "Pendiente")}${opt(item.status, "Pagada")}${opt(item.status, "Vencida")}</select><span class="pill ${saldo <= 0 ? "done" : "open"}">${saldo <= 0 ? "Completada" : "Abierta"}</span></td>
-      <td><input ${disabled} data-field="paidAmount" type="number" step="0.01" value="${num(item.paidAmount)}"></td>
+      <td>${state.editInvoices ? `<input data-field="paidAmount" type="number" step="0.01" value="${num(item.paidAmount)}">` : `<div class="money-preview">${money(item.paidAmount)}</div>`}</td>
       <td>${money(saldo)}</td>
       <td class="col-notas">${
         state.editInvoices
@@ -357,11 +357,11 @@ function renderSettlements() {
     <td>${index + 1}</td>
     <td><input ${disabled} data-field="client" value="${esc(item.client)}"></td>
     <td><input ${disabled} data-field="invoiceNo" value="${esc(item.invoiceNo)}"></td>
-    <td><input ${disabled} data-field="amount" type="number" step="0.01" value="${num(item.amount)}"></td>
+    <td>${state.editSettlements ? `<input data-field="amount" type="number" step="0.01" value="${num(item.amount)}">` : `<div class="money-preview">${money(item.amount)}</div>`}</td>
     <td><select ${disabled} data-field="status">${opt(item.status, "Pendiente")}${opt(item.status, "Pagada")}</select></td>
     <td><select ${disabled} data-field="liquidation">${opt(item.liquidation, "Pendiente")}${opt(item.liquidation, "Ajustada")}</select></td>
-    <td><input ${disabled} data-field="oweAmaia" type="number" step="0.01" value="${num(item.oweAmaia)}"></td>
-    <td><input ${disabled} data-field="oweOihane" type="number" step="0.01" value="${num(item.oweOihane)}"></td>
+    <td>${state.editSettlements ? `<input data-field="oweAmaia" type="number" step="0.01" value="${num(item.oweAmaia)}">` : `<div class="money-preview">${money(item.oweAmaia)}</div>`}</td>
+    <td>${state.editSettlements ? `<input data-field="oweOihane" type="number" step="0.01" value="${num(item.oweOihane)}">` : `<div class="money-preview">${money(item.oweOihane)}</div>`}</td>
     <td><input ${disabled} data-field="note" value="${esc(item.note)}"></td>
     <td><button class="icon-btn ${state.editSettlements ? "" : "hidden"}" data-del-settlement="${item.id}" type="button">x</button></td>
   </tr>`).join("");
