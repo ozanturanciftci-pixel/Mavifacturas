@@ -49,7 +49,6 @@ async function init() {
   state.activeTab = "resumen";
   bindEvents();
   initTablePanning();
-  initIntroGate();
   render();
 }
 
@@ -515,60 +514,6 @@ function initTablePanning() {
       { passive: false }
     );
   });
-}
-
-function initIntroGate() {
-  const gate = document.getElementById("introGate");
-  const canvas = document.getElementById("introMask");
-  if (!gate || !canvas) return;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-
-  let drawing = false;
-  const cellSize = 28;
-  const touched = new Set();
-  let totalCells = 0;
-
-  const resize = () => {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = "#cfd6ee";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.globalCompositeOperation = "destination-out";
-    touched.clear();
-    totalCells = Math.ceil(canvas.width / cellSize) * Math.ceil(canvas.height / cellSize);
-  };
-
-  const tryOpen = () => {
-    if (touched.size / Math.max(totalCells, 1) < 0.2) return;
-    gate.classList.add("hidden");
-    window.setTimeout(() => gate.remove(), 520);
-  };
-
-  const eraseAt = (clientX, clientY) => {
-    const rect = canvas.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
-    ctx.beginPath();
-    ctx.arc(x, y, 44, 0, Math.PI * 2);
-    ctx.fill();
-    touched.add(`${Math.floor(x / cellSize)}:${Math.floor(y / cellSize)}`);
-    tryOpen();
-  };
-
-  canvas.addEventListener("pointerdown", (event) => {
-    drawing = true;
-    eraseAt(event.clientX, event.clientY);
-  });
-  canvas.addEventListener("pointermove", (event) => {
-    if (!drawing && event.pointerType !== "mouse") return;
-    eraseAt(event.clientX, event.clientY);
-  });
-  canvas.addEventListener("pointerup", () => { drawing = false; });
-  canvas.addEventListener("pointerleave", () => { drawing = false; });
-  window.addEventListener("resize", resize);
-  resize();
 }
 
 function subscribeCloud(onChange) {
