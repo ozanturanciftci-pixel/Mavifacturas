@@ -45,6 +45,8 @@ async function init() {
     await seedCloudIfEmpty();
   }
 
+  // Always start on the summary tab when the page is opened.
+  state.activeTab = "resumen";
   bindEvents();
   initTablePanning();
   render();
