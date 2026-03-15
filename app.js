@@ -336,7 +336,7 @@ function renderInvoices() {
           ? `<textarea data-field="notes" rows="2">${esc(item.notes)}</textarea>`
           : `<div class="note-preview" title="${esc(item.notes || "")}">${esc(item.notes || "-")}</div>`
       }</td>
-      <td><button class="icon-btn ${state.editInvoices ? "" : "hidden"}" data-del-invoice="${item.id}" type="button">x</button></td>
+      <td><button class="icon-btn ${state.editInvoices ? "" : "hidden"}" data-del-invoice="${item.id}" type="button" title="Eliminar fila">×</button></td>
     </tr>`;
   }).join("");
 

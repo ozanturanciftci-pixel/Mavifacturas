@@ -600,6 +600,22 @@ input[disabled], select[disabled], textarea[disabled] {
 #invoiceTable th:nth-child(11), #invoiceTable td:nth-child(11) { min-width: 120px; }
 #invoiceTable th:nth-child(12), #invoiceTable td:nth-child(12) { min-width: 210px; }
 #invoiceTable th:nth-child(13), #invoiceTable td:nth-child(13) { min-width: 34px; width: 34px; }
+#invoiceTable th:last-child,
+#invoiceTable td:last-child {
+  position: sticky;
+  right: 0;
+  z-index: 2;
+  border-left: 1px solid #dfebff;
+}
+#invoiceTable thead th:last-child {
+  background: #f0f5ff;
+}
+#invoiceTable tbody tr:nth-child(odd) td:last-child {
+  background: #ffffff;
+}
+#invoiceTable tbody tr:nth-child(even) td:last-child {
+  background: #f4f8ff;
+}
 
 #settlementTable th:nth-child(1), #settlementTable td:nth-child(1) { min-width: 44px; width: 44px; }
 #settlementTable th:nth-child(2), #settlementTable td:nth-child(2) { min-width: 120px; }
