@@ -359,7 +359,6 @@ function renderSettlements() {
     <td><input ${disabled} data-field="invoiceNo" value="${esc(item.invoiceNo)}"></td>
     <td>${state.editSettlements ? `<input data-field="amount" type="number" step="0.01" value="${num(item.amount)}">` : `<div class="money-preview">${money(item.amount)}</div>`}</td>
     <td><select ${disabled} data-field="status">${opt(item.status, "Pendiente")}${opt(item.status, "Pagada")}</select></td>
-    <td><select ${disabled} data-field="liquidation">${opt(item.liquidation, "Pendiente")}${opt(item.liquidation, "Ajustada")}</select></td>
     <td>${state.editSettlements ? `<input data-field="oweAmaia" type="number" step="0.01" value="${num(item.oweAmaia)}">` : `<div class="money-preview">${money(item.oweAmaia)}</div>`}</td>
     <td>${state.editSettlements ? `<input data-field="oweOihane" type="number" step="0.01" value="${num(item.oweOihane)}">` : `<div class="money-preview">${money(item.oweOihane)}</div>`}</td>
     <td><input ${disabled} data-field="note" value="${esc(item.note)}"></td>
