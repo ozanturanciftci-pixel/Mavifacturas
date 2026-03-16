@@ -538,12 +538,24 @@ function recentMonthsData(limit = 6) {
 }
 
 function getInvoicesByMonth() {
-  if (state.activeMonth === "all") return [...state.invoices];
-  return state.invoices.filter((x) => x.month === state.activeMonth);
+  if (state.activeMonth === "all") return sortInvoicesOldToNew(state.invoices);
+  return sortInvoicesOldToNew(state.invoices.filter((x) => x.month === state.activeMonth));
 }
 function getSettlementsByMonth() {
   if (state.activeMonth === "all") return [...state.settlements];
   return state.settlements.filter((x) => x.month === state.activeMonth);
+}
+
+function sortInvoicesOldToNew(list) {
+  return [...list].sort((a, b) => {
+    const aDate = a.issueDate || `${a.month || "9999-12"}-31`;
+    const bDate = b.issueDate || `${b.month || "9999-12"}-31`;
+    const byDate = aDate.localeCompare(bDate);
+    if (byDate !== 0) return byDate;
+    const byMonth = (a.month || "").localeCompare(b.month || "");
+    if (byMonth !== 0) return byMonth;
+    return (a.client || "").localeCompare(b.client || "");
+  });
 }
 function ensureMonthExists(month) {
   if (!month) return;
