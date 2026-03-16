@@ -115,10 +115,12 @@ function bindEvents() {
   document.getElementById("addInvoiceBtn").addEventListener("click", async () => {
     state.editInvoices = true;
     document.getElementById("toggleInvoiceEditBtn").textContent = "Aceptar";
-    const newMonth = formatMonth(new Date());
+    const now = new Date();
+    const newMonth = formatMonth(now);
+    const todayIso = formatDateISO(now);
     ensureMonthExists(newMonth);
     state.activeMonth = "all";
-    const item = { id: uid(), month: newMonth, title: String(getInvoicesByMonth().length + 1), client: "", invoiceNo: "", baseAmount: 0, totalAmount: 0, issuedBy: "", issueDate: `${newMonth}-01`, dueDate: "", status: "Pendiente", paymentMode: "Contado", paidAmount: 0, installments: [], notes: "" };
+    const item = { id: uid(), month: newMonth, title: String(getInvoicesByMonth().length + 1), client: "", invoiceNo: "", baseAmount: 0, totalAmount: 0, issuedBy: "", issueDate: todayIso, dueDate: "", status: "Pendiente", paymentMode: "Contado", paidAmount: 0, installments: [], notes: "" };
     state.invoices.push(item);
     persist();
     render();
@@ -536,19 +538,11 @@ function recentMonthsData(limit = 6) {
 }
 
 function getInvoicesByMonth() {
-  if (state.activeMonth === "all") {
-    return [...state.invoices].sort((a, b) => {
-      const byMonth = (a.month || "").localeCompare(b.month || "");
-      if (byMonth !== 0) return byMonth;
-      const byDate = (a.issueDate || "").localeCompare(b.issueDate || "");
-      if (byDate !== 0) return byDate;
-      return (a.client || "").localeCompare(b.client || "");
-    });
-  }
+  if (state.activeMonth === "all") return [...state.invoices];
   return state.invoices.filter((x) => x.month === state.activeMonth);
 }
 function getSettlementsByMonth() {
-  if (state.activeMonth === "all") return [...state.settlements].sort((a, b) => (a.month || "").localeCompare(b.month || ""));
+  if (state.activeMonth === "all") return [...state.settlements];
   return state.settlements.filter((x) => x.month === state.activeMonth);
 }
 function ensureMonthExists(month) {
@@ -717,6 +711,7 @@ function monthShortOnly(v) {
   return `${mm} ${y}`;
 }
 function formatMonth(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`; }
+function formatDateISO(d) { return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; }
 function num(v) {
   if (typeof v === "number") return Number.isFinite(v) ? v : 0;
   if (typeof v === "string") {
