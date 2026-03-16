@@ -7,6 +7,7 @@
   --line: #c7d7f3;
   --white: #ffffff;
   --shadow: 0 16px 36px rgba(3, 18, 112, 0.2);
+  --panel-width: min(1240px, 94vw);
 }
 
 * { box-sizing: border-box; }
@@ -29,7 +30,6 @@ body {
 }
 
 .app {
-  --panel-width: min(1240px, 94vw);
   position: relative;
   z-index: 1;
   width: var(--panel-width);
@@ -101,21 +101,73 @@ h1 {
 .ticker-track {
   width: max-content;
   display: flex;
-  gap: 16px;
-  padding: 9px 0;
+  gap: 14px;
+  padding: 8px 0;
   animation: ticker-left 18s linear infinite;
 }
 
-.ticker-item {
-  color: #edf3ff;
-  background: rgba(9, 31, 115, 0.44);
-  border: 1px solid rgba(180, 208, 255, 0.4);
-  border-radius: 999px;
-  padding: 6px 14px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  white-space: nowrap;
+.ticker-card {
+  position: relative;
+  width: 106px;
+  height: 74px;
+  border-radius: 8px;
+  border: 1px solid rgba(161, 188, 246, 0.55);
+  background: linear-gradient(180deg, #fefefe, #eff4ff);
+  box-shadow: 0 8px 18px rgba(4, 24, 110, 0.2);
+  overflow: hidden;
+}
+
+.ticker-card::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 10px;
+  height: 2px;
+  background: rgba(26, 62, 146, 0.18);
+  box-shadow:
+    0 9px 0 rgba(26, 62, 146, 0.16),
+    0 18px 0 rgba(26, 62, 146, 0.14),
+    0 27px 0 rgba(26, 62, 146, 0.12),
+    0 36px 0 rgba(26, 62, 146, 0.1),
+    0 45px 0 rgba(26, 62, 146, 0.08);
+}
+
+.ticker-card::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  top: 8px;
+  width: 20px;
+  height: 10px;
+  border-radius: 3px;
+  background: rgba(240, 142, 61, 0.55);
+}
+
+.ticker-card.style-1 {
+  transform: rotate(-6deg);
+}
+
+.ticker-card.style-2 {
+  transform: rotate(4deg);
+  background: linear-gradient(180deg, #f8fbff, #e8f0ff);
+}
+
+.ticker-card.style-3 {
+  transform: rotate(-3deg);
+  background:
+    linear-gradient(180deg, #fbfcff, #eef3ff),
+    linear-gradient(90deg, rgba(49, 85, 169, 0.08) 30%, transparent 30%);
+}
+
+.ticker-card.style-4 {
+  transform: rotate(5deg);
+  border-color: rgba(145, 177, 242, 0.65);
+}
+
+.ticker-card.style-5 {
+  transform: rotate(-4deg);
+  background: linear-gradient(180deg, #fefefe, #ecf2ff);
 }
 
 @keyframes ticker-left {
@@ -264,8 +316,8 @@ h2 {
 .mavi-footer-min {
   position: relative;
   z-index: 1;
-  width: min(1280px, 96vw);
-  margin: 18px auto 26px;
+  width: var(--panel-width);
+  margin: 6px auto 26px;
   background: #e5e6ea;
   border-radius: 4px;
 }
