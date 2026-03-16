@@ -98,6 +98,22 @@ h1 {
   padding: 4px 8px 2px;
 }
 
+.wecan-only {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 6px;
+}
+
+.wecan-only img {
+  width: min(100%, 360px);
+  height: 300px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid #bfd0f0;
+  box-shadow: 0 10px 22px rgba(20, 59, 132, 0.16);
+}
+
 .transition-photo {
   height: 134px;
   border-radius: 14px;
@@ -228,6 +244,14 @@ h2 {
 
 .month-tabs {
   justify-content: flex-start;
+}
+
+#monthTabsFact.collapsed .month-tab:not(.all-tab) {
+  display: none;
+}
+
+.month-toggle {
+  min-width: 108px;
 }
 
 .month-tab {
@@ -837,6 +861,10 @@ input[disabled], select[disabled], textarea[disabled] {
   }
   .photo-transition {
     grid-template-columns: 1fr;
+  }
+  .wecan-only img {
+    width: min(100%, 310px);
+    height: 250px;
   }
   .transition-photo,
   .transition-photo.wecan img {

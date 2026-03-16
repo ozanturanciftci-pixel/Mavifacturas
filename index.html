@@ -39,21 +39,8 @@
       </section>
 
       <section id="tab-resumen" class="tab-panel active">
-        <section class="stats" id="summaryStats"></section>
-        <section class="card chart-card">
-          <div class="card-head"><h2>Últimos meses</h2></div>
-          <div id="yearlyChart" class="chart"></div>
-        </section>
-        <section class="photo-transition" aria-label="Amaia Oihane y We can do it">
-          <div class="transition-photo amaia"></div>
-          <div class="transition-photo wecan">
-            <img src="assets/profile/wecan.jpg" alt="We can do it" />
-          </div>
-          <div class="transition-photo oihane"></div>
-        </section>
-        <section class="card fun-card">
-          <div class="card-head"><h2>Entre Nosotras · Balance total</h2></div>
-          <div id="funBalance" class="fun-balance"></div>
+        <section class="wecan-only" aria-label="We can do it">
+          <img src="assets/profile/wecan.jpg" alt="We can do it" />
         </section>
       </section>
 
@@ -68,7 +55,8 @@
           </div>
 
           <div class="month-bar">
-            <div class="month-tabs" id="monthTabsFact"></div>
+            <div class="month-tabs collapsed" id="monthTabsFact"></div>
+            <button class="month-tab month-toggle" id="toggleFactMonthsBtn" type="button">Meses</button>
           </div>
 
           <div class="table-wrap">
