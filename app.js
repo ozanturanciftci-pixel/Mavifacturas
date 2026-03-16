@@ -3,11 +3,12 @@ const VAT_RATE = 1.21;
 
 const DEFAULT_STATE = {
   activeTab: "resumen",
-  activeMonth: "2026-03",
+  activeMonth: "all",
   editInvoices: false,
   editSettlements: false,
   installmentOpen: {},
   showFactMonths: false,
+  showEntreMonths: false,
   months: ["2025-10", "2026-02", "2026-03", "2026-04"],
   invoices: [
     { id: uid(), month: "2026-03", title: "1", client: "TOPA", invoiceNo: "Private Tour + Bilbao", baseAmount: 1150, totalAmount: 1391.5, issuedBy: "Amaia", issueDate: "2026-03-10", dueDate: "2026-06-10", status: "Pendiente", paymentMode: "Contado", paidAmount: 0, installments: [], notes: "" },
@@ -24,11 +25,14 @@ const cloudEnabled = Boolean(APP_CONFIG.SUPABASE_URL && APP_CONFIG.SUPABASE_ANON
 const supabaseClient = cloudEnabled ? window.supabase.createClient(APP_CONFIG.SUPABASE_URL, APP_CONFIG.SUPABASE_ANON_KEY) : null;
 
 let state = loadLocalState();
+let firstFactTabEntry = true;
+let firstEntreTabEntry = true;
 
 const mainTabsEl = document.getElementById("mainTabs");
 const monthTabsFactEl = document.getElementById("monthTabsFact");
 const monthTabsEntreEl = document.getElementById("monthTabsEntre");
 const toggleFactMonthsBtn = document.getElementById("toggleFactMonthsBtn");
+const toggleEntreMonthsBtn = document.getElementById("toggleEntreMonthsBtn");
 
 const summaryStatsEl = document.getElementById("summaryStats");
 const yearlyChartEl = document.getElementById("yearlyChart");
@@ -60,8 +64,16 @@ function bindEvents() {
     const btn = event.target.closest("button[data-tab]");
     if (!btn) return;
     state.activeTab = btn.dataset.tab;
+    if (btn.dataset.tab === "facturacion" && firstFactTabEntry) {
+      state.activeMonth = "all";
+      firstFactTabEntry = false;
+    }
+    if (btn.dataset.tab === "entre" && firstEntreTabEntry) {
+      state.activeMonth = "all";
+      firstEntreTabEntry = false;
+    }
     persist();
-    renderTabsOnly();
+    render();
   });
 
   [monthTabsFactEl, monthTabsEntreEl].forEach((el) => {
@@ -76,6 +88,12 @@ function bindEvents() {
 
   toggleFactMonthsBtn?.addEventListener("click", () => {
     state.showFactMonths = !state.showFactMonths;
+    persist();
+    renderMonthTabs();
+  });
+
+  toggleEntreMonthsBtn?.addEventListener("click", () => {
+    state.showEntreMonths = !state.showEntreMonths;
     persist();
     renderMonthTabs();
   });
@@ -97,9 +115,9 @@ function bindEvents() {
   document.getElementById("addInvoiceBtn").addEventListener("click", async () => {
     state.editInvoices = true;
     document.getElementById("toggleInvoiceEditBtn").textContent = "Aceptar";
-    const newMonth = state.activeMonth === "all" ? formatMonth(new Date()) : state.activeMonth;
+    const newMonth = formatMonth(new Date());
     ensureMonthExists(newMonth);
-    state.activeMonth = newMonth;
+    state.activeMonth = "all";
     const item = { id: uid(), month: newMonth, title: String(getInvoicesByMonth().length + 1), client: "", invoiceNo: "", baseAmount: 0, totalAmount: 0, issuedBy: "", issueDate: `${newMonth}-01`, dueDate: "", status: "Pendiente", paymentMode: "Contado", paidAmount: 0, installments: [], notes: "" };
     state.invoices.push(item);
     persist();
@@ -110,9 +128,9 @@ function bindEvents() {
   document.getElementById("addSettlementBtn").addEventListener("click", async () => {
     state.editSettlements = true;
     document.getElementById("toggleSettlementEditBtn").textContent = "Aceptar";
-    const newMonth = state.activeMonth === "all" ? formatMonth(new Date()) : state.activeMonth;
+    const newMonth = formatMonth(new Date());
     ensureMonthExists(newMonth);
-    state.activeMonth = newMonth;
+    state.activeMonth = "all";
     const item = { id: uid(), month: newMonth, client: "", invoiceNo: "", amount: 0, status: "Pendiente", liquidation: "Pendiente", oweAmaia: 0, oweOihane: 0, note: "" };
     state.settlements.push(item);
     persist();
@@ -153,7 +171,6 @@ function bindEvents() {
     if (field === "issueDate" && /^\d{4}-\d{2}-\d{2}$/.test(item.issueDate || "")) {
       item.month = item.issueDate.slice(0, 7);
       ensureMonthExists(item.month);
-      state.activeMonth = item.month;
     }
 
     persist();
@@ -272,7 +289,15 @@ function renderMonthTabs() {
   monthTabsFactEl.innerHTML = html;
   monthTabsEntreEl.innerHTML = html;
   monthTabsFactEl.classList.toggle("collapsed", !state.showFactMonths);
-  if (toggleFactMonthsBtn) toggleFactMonthsBtn.textContent = state.showFactMonths ? "Ocultar meses" : "Meses";
+  monthTabsEntreEl.classList.toggle("collapsed", !state.showEntreMonths);
+  if (toggleFactMonthsBtn) {
+    toggleFactMonthsBtn.textContent = state.showFactMonths ? "Ocultar" : "Meses";
+    toggleFactMonthsBtn.classList.toggle("is-open", state.showFactMonths);
+  }
+  if (toggleEntreMonthsBtn) {
+    toggleEntreMonthsBtn.textContent = state.showEntreMonths ? "Ocultar" : "Meses";
+    toggleEntreMonthsBtn.classList.toggle("is-open", state.showEntreMonths);
+  }
 }
 
 function renderSummary() {
@@ -417,7 +442,7 @@ function renderInvoices() {
         state.editInvoices
           ? `<select data-field="paymentMode">${opt(mode, "Contado")}${opt(mode, "A plazos")}</select>`
           : `<span class="pay-badge ${isInstallment ? "installment" : "cash"}">${mode}</span>`
-      } ${isInstallment && hasInstallments ? `<button type="button" class="mini-toggle" data-toggle-installments="${item.id}">${isOpen ? "Ocultar" : "Cuotas"}</button>` : ""} ${isInstallment && !hasInstallments && state.editInvoices ? `<button type="button" class="mini-toggle" data-add-installment="${item.id}">+ Cuota</button>` : ""}</td>
+      } ${isInstallment && hasInstallments ? `<button type="button" class="mini-toggle ${isOpen ? "is-open" : ""}" data-toggle-installments="${item.id}">${isOpen ? "Ocultar" : "Cuotas"}</button>` : ""} ${isInstallment && !hasInstallments && state.editInvoices ? `<button type="button" class="mini-toggle" data-add-installment="${item.id}">+ Cuota</button>` : ""}</td>
       <td>${state.editInvoices ? `<input data-field="paidAmount" type="number" step="0.01" value="${num(item.paidAmount)}">` : `<div class="money-preview">${money(item.paidAmount)}</div>`}</td>
       <td>${money(saldo)}</td>
       <td class="col-notas">${
@@ -673,6 +698,7 @@ function loadLocalState() {
     next.invoices = (next.invoices || []).map(normalizeInvoice);
     next.installmentOpen = next.installmentOpen || {};
     next.showFactMonths = Boolean(next.showFactMonths);
+    next.showEntreMonths = Boolean(next.showEntreMonths);
     return next;
   } catch (_e) { return structuredClone(DEFAULT_STATE); }
 }

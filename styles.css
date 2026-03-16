@@ -140,7 +140,7 @@ h1 {
   font-family: "Cormorant Garamond", serif;
   font-style: italic;
   font-weight: 600;
-  font-size: clamp(2.4rem, 6vw, 3.4rem);
+  font-size: clamp(2.9rem, 6.8vw, 3.9rem);
   line-height: 1;
   text-shadow: 0 6px 14px rgba(10, 33, 110, 0.24);
   user-select: none;
@@ -281,9 +281,18 @@ h2 {
 #monthTabsFact.collapsed .month-tab:not(.all-tab) {
   display: none;
 }
+#monthTabsEntre.collapsed .month-tab:not(.all-tab) {
+  display: none;
+}
 
 .month-toggle {
   min-width: 108px;
+}
+
+.month-toggle.is-open {
+  background: #ffecee;
+  color: #a13854;
+  border-color: #e9bcc7;
 }
 
 .month-tab {
@@ -805,6 +814,12 @@ input[disabled], select[disabled], textarea[disabled] {
   cursor: pointer;
 }
 
+.mini-toggle.is-open {
+  background: #ffecee;
+  border-color: #e9bcc7;
+  color: #a13854;
+}
+
 .installment-row td {
   padding-top: 2px;
   padding-bottom: 8px;
@@ -905,7 +920,7 @@ input[disabled], select[disabled], textarea[disabled] {
   .side-word {
     width: 94px;
     height: 94px;
-    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    font-size: clamp(2.1rem, 9vw, 2.8rem);
   }
   .transition-photo,
   .transition-photo.wecan img {
