@@ -53,8 +53,8 @@ body {
 }
 
 .topbar {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 18px;
 }
@@ -71,6 +71,11 @@ body {
 .hero {
   color: white;
   padding: 8px 0 2px;
+}
+
+.tabs-under-hero {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .hero-italic {
@@ -205,11 +210,11 @@ h2 {
 }
 
 .main-tabs {
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 8px;
   width: fit-content;
-  margin: 0 auto;
+  margin: 2px 0 0;
   padding: 5px 10px;
   border: 2px solid rgba(247, 235, 212, 0.88);
   border-radius: 999px;
