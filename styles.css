@@ -167,10 +167,16 @@ h2 {
 }
 
 .main-tabs {
-  justify-content: flex-start;
-  gap: 12px;
-  width: 100%;
-  padding-left: 2px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 5px 10px;
+  border: 2px solid rgba(247, 235, 212, 0.88);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 18px rgba(7, 24, 104, 0.25);
 }
 
 .main-tab, .month-tab, .btn {
@@ -183,23 +189,23 @@ h2 {
 }
 
 .main-tab {
-  background: rgba(245, 235, 214, 0.2);
+  background: rgba(245, 235, 214, 0.15);
   color: #f5ead5;
   min-height: 38px;
   padding: 7px 14px;
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
-  border-color: rgba(247, 235, 212, 0.42);
+  border-color: rgba(247, 235, 212, 0.26);
   border-radius: 999px;
   font-weight: 600;
   transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .main-tab.active {
-  background: rgba(245, 235, 214, 0.24);
-  color: #f7ecda;
-  border-color: rgba(247, 235, 212, 0.5);
+  background: rgba(236, 218, 186, 0.48);
+  color: #fff6e8;
+  border-color: rgba(248, 231, 198, 0.72);
 }
 
 .main-tab:hover {
