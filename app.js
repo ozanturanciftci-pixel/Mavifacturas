@@ -84,19 +84,19 @@ function bindEvents() {
     state.editInvoices = !state.editInvoices;
     persist();
     renderInvoices();
-    document.getElementById("toggleInvoiceEditBtn").textContent = state.editInvoices ? "Bloquear" : "Editar";
+    document.getElementById("toggleInvoiceEditBtn").textContent = state.editInvoices ? "Aceptar" : "Editar";
   });
 
   document.getElementById("toggleSettlementEditBtn").addEventListener("click", () => {
     state.editSettlements = !state.editSettlements;
     persist();
     renderSettlements();
-    document.getElementById("toggleSettlementEditBtn").textContent = state.editSettlements ? "Bloquear" : "Editar";
+    document.getElementById("toggleSettlementEditBtn").textContent = state.editSettlements ? "Aceptar" : "Editar";
   });
 
   document.getElementById("addInvoiceBtn").addEventListener("click", async () => {
     state.editInvoices = true;
-    document.getElementById("toggleInvoiceEditBtn").textContent = "Bloquear";
+    document.getElementById("toggleInvoiceEditBtn").textContent = "Aceptar";
     const newMonth = state.activeMonth === "all" ? formatMonth(new Date()) : state.activeMonth;
     ensureMonthExists(newMonth);
     state.activeMonth = newMonth;
@@ -109,7 +109,7 @@ function bindEvents() {
 
   document.getElementById("addSettlementBtn").addEventListener("click", async () => {
     state.editSettlements = true;
-    document.getElementById("toggleSettlementEditBtn").textContent = "Bloquear";
+    document.getElementById("toggleSettlementEditBtn").textContent = "Aceptar";
     const newMonth = state.activeMonth === "all" ? formatMonth(new Date()) : state.activeMonth;
     ensureMonthExists(newMonth);
     state.activeMonth = newMonth;
@@ -250,8 +250,8 @@ function render() {
   renderSummary();
   renderInvoices();
   renderSettlements();
-  document.getElementById("toggleInvoiceEditBtn").textContent = state.editInvoices ? "Bloquear" : "Editar";
-  document.getElementById("toggleSettlementEditBtn").textContent = state.editSettlements ? "Bloquear" : "Editar";
+  document.getElementById("toggleInvoiceEditBtn").textContent = state.editInvoices ? "Aceptar" : "Editar";
+  document.getElementById("toggleSettlementEditBtn").textContent = state.editSettlements ? "Aceptar" : "Editar";
 }
 
 function renderTabsOnly() {
