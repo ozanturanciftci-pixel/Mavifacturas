@@ -130,6 +130,22 @@ h1 {
     drop-shadow(0 5px 12px rgba(12, 44, 122, 0.24));
 }
 
+.side-word {
+  width: 132px;
+  height: 132px;
+  display: grid;
+  place-items: center;
+  justify-self: center;
+  color: #f7f1dd;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(2.4rem, 6vw, 3.4rem);
+  line-height: 1;
+  text-shadow: 0 6px 14px rgba(10, 33, 110, 0.24);
+  user-select: none;
+}
+
 .transition-photo {
   height: 134px;
   border-radius: 14px;
@@ -885,6 +901,11 @@ input[disabled], select[disabled], textarea[disabled] {
   .nazar-side {
     width: 94px;
     height: 94px;
+  }
+  .side-word {
+    width: 94px;
+    height: 94px;
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
   }
   .transition-photo,
   .transition-photo.wecan img {
