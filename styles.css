@@ -102,16 +102,25 @@ h1 {
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 14px;
   padding: 10px 0 6px;
 }
 
-.wecan-only img {
+.wecan-main {
   width: min(100%, 360px);
   height: 300px;
-  object-fit: cover;
+  object-fit: contain;
+  background: #eef5ff;
   border-radius: 14px;
   border: 1px solid #bfd0f0;
   box-shadow: 0 10px 22px rgba(20, 59, 132, 0.16);
+}
+
+.nazar-side {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 10px rgba(12, 44, 122, 0.28));
 }
 
 .transition-photo {
@@ -862,9 +871,13 @@ input[disabled], select[disabled], textarea[disabled] {
   .photo-transition {
     grid-template-columns: 1fr;
   }
-  .wecan-only img {
+  .wecan-main {
     width: min(100%, 310px);
     height: 250px;
+  }
+  .nazar-side {
+    width: 46px;
+    height: 46px;
   }
   .transition-photo,
   .transition-photo.wecan img {
