@@ -110,16 +110,18 @@ h1 {
   width: min(100%, 360px);
   height: 300px;
   object-fit: contain;
-  background: #eef5ff;
-  border-radius: 14px;
-  border: 1px solid #bfd0f0;
-  box-shadow: 0 10px 22px rgba(20, 59, 132, 0.16);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .nazar-side {
-  width: 62px;
-  height: 62px;
+  width: 72px;
+  height: 72px;
   object-fit: contain;
+  mix-blend-mode: multiply;
+  clip-path: circle(46% at 50% 50%);
+  opacity: 0.95;
   filter: drop-shadow(0 4px 10px rgba(12, 44, 122, 0.28));
 }
 
@@ -876,8 +878,8 @@ input[disabled], select[disabled], textarea[disabled] {
     height: 250px;
   }
   .nazar-side {
-    width: 46px;
-    height: 46px;
+    width: 56px;
+    height: 56px;
   }
   .transition-photo,
   .transition-photo.wecan img {
