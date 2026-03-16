@@ -37,26 +37,20 @@
         <p class="hero-italic">Tienes facturas, además,</p>
         <h1>SABES CÓMO CONTARLAS</h1>
       </section>
-      <section class="invoice-ticker" aria-label="Faja de facturas en movimiento">
-        <div class="ticker-track">
-          <span class="ticker-photo up"><img src="assets/ticker/01.png" alt="" /></span>
-          <span class="ticker-photo down"><img src="assets/ticker/02.png" alt="" /></span>
-          <span class="ticker-photo up"><img src="assets/ticker/03.png" alt="" /></span>
-          <span class="ticker-photo down"><img src="assets/ticker/04.png" alt="" /></span>
-          <span class="ticker-photo up"><img src="assets/ticker/05.png" alt="" /></span>
-          <span class="ticker-photo down"><img src="assets/ticker/01.png" alt="" /></span>
-          <span class="ticker-photo up"><img src="assets/ticker/02.png" alt="" /></span>
-          <span class="ticker-photo down"><img src="assets/ticker/03.png" alt="" /></span>
-          <span class="ticker-photo up"><img src="assets/ticker/04.png" alt="" /></span>
-          <span class="ticker-photo down"><img src="assets/ticker/05.png" alt="" /></span>
-        </div>
-      </section>
 
       <section id="tab-resumen" class="tab-panel active">
         <section class="stats" id="summaryStats"></section>
         <section class="card chart-card">
           <div class="card-head"><h2>Últimos meses</h2></div>
           <div id="yearlyChart" class="chart"></div>
+          <div id="summaryProjects" class="summary-projects"></div>
+        </section>
+        <section class="duo-strip card">
+          <div class="duo-photo amaia"></div>
+          <div class="duo-center">
+            <img src="assets/profile/wecan.jpg" alt="We can do it" />
+          </div>
+          <div class="duo-photo oihane"></div>
         </section>
         <section class="card fun-card">
           <div class="card-head"><h2>Entre Nosotras · Balance total</h2></div>
@@ -83,7 +77,7 @@
               <thead>
                 <tr>
                   <th>Nº</th><th>Cliente</th><th>Nº Factura</th><th>Base (€)</th><th>Total + IVA (€)</th>
-                  <th>Emitida por</th><th class="col-date">Emisión</th><th class="col-date">Vencimiento</th><th>Estado</th><th>Pagado (€)</th>
+                  <th>Emitida por</th><th class="col-date">Emisión</th><th class="col-date">Vencimiento</th><th>Estado</th><th>Pago</th><th>Pagado (€)</th>
                   <th>Saldo (€)</th><th class="col-notas">Notas</th><th></th>
                 </tr>
               </thead>
@@ -91,7 +85,7 @@
               <tfoot>
                 <tr>
                   <td colspan="3">Totales del mes</td><td id="totalBase"></td><td id="totalAmount"></td>
-                  <td colspan="4"></td><td id="totalPaid"></td><td id="totalBalance"></td><td colspan="2"></td>
+                  <td colspan="5"></td><td id="totalPaid"></td><td id="totalBalance"></td><td colspan="2"></td>
                 </tr>
               </tfoot>
             </table>
