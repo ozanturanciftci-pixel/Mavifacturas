@@ -106,23 +106,18 @@ h1 {
   padding: 10px 0 6px;
 }
 
-.wecan-main {
+.wecan-main,
+.nazar-side {
   width: min(100%, 360px);
   height: 300px;
-  object-fit: contain;
+  object-fit: cover;
   background: transparent;
   border: 0;
   box-shadow: none;
 }
 
 .nazar-side {
-  width: 72px;
-  height: 72px;
-  object-fit: contain;
-  mix-blend-mode: multiply;
-  clip-path: circle(46% at 50% 50%);
-  opacity: 0.95;
-  filter: drop-shadow(0 4px 10px rgba(12, 44, 122, 0.28));
+  border-radius: 14px;
 }
 
 .transition-photo {
@@ -873,13 +868,10 @@ input[disabled], select[disabled], textarea[disabled] {
   .photo-transition {
     grid-template-columns: 1fr;
   }
-  .wecan-main {
+  .wecan-main,
+  .nazar-side {
     width: min(100%, 310px);
     height: 250px;
-  }
-  .nazar-side {
-    width: 56px;
-    height: 56px;
   }
   .transition-photo,
   .transition-photo.wecan img {
