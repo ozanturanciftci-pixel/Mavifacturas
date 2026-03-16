@@ -6,13 +6,12 @@ const DEFAULT_STATE = {
   activeMonth: "2026-03",
   editInvoices: false,
   editSettlements: false,
-  summaryOpen: {},
   installmentOpen: {},
   months: ["2025-10", "2026-02", "2026-03", "2026-04"],
   invoices: [
     { id: uid(), month: "2026-03", title: "1", client: "TOPA", invoiceNo: "Private Tour + Bilbao", baseAmount: 1150, totalAmount: 1391.5, issuedBy: "Amaia", issueDate: "2026-03-10", dueDate: "2026-06-10", status: "Pendiente", paymentMode: "Peşin", paidAmount: 0, installments: [], notes: "" },
     { id: uid(), month: "2026-02", title: "2", client: "YAIZA", invoiceNo: "Rebranding + Web", baseAmount: 1650, totalAmount: 1996.5, issuedBy: "Oihane", issueDate: "2026-02-11", dueDate: "2026-02-17", status: "Pagada", paymentMode: "Peşin", paidAmount: 1996.5, installments: [], notes: "" },
-    { id: uid(), month: "2025-10", title: "1", client: "TOPA", invoiceNo: "Rebranding + Web", baseAmount: 4440, totalAmount: 5372, issuedBy: "Oihane", issueDate: "2025-10-06", dueDate: "2026-03-03", status: "Pendiente", paymentMode: "Taksitli", paidAmount: 2400, installments: [{ id: uid(), date: "2026-01-10", amount: 1200, note: "Enero" }, { id: uid(), date: "2026-02-10", amount: 1200, note: "Febrero" }], notes: "No han pagado Enero ni Febrero" },
+    { id: uid(), month: "2025-10", title: "1", client: "TOPA", invoiceNo: "Rebranding + Web", baseAmount: 4440, totalAmount: 5372, issuedBy: "Oihane", issueDate: "2025-10-06", dueDate: "2026-03-03", status: "Pendiente", paymentMode: "Taksitli", paidAmount: 2400, installments: [{ id: uid(), amount: 1200, status: "Pagada", note: "Enero" }, { id: uid(), amount: 1200, status: "Pagada", note: "Febrero" }], notes: "No han pagado Enero ni Febrero" },
   ],
   settlements: [
     { id: uid(), month: "2026-03", client: "YAIZA", invoiceNo: "Rebranding + Web", amount: 1996.5, status: "Pagada", liquidation: "Pendiente", oweAmaia: 825, oweOihane: 0, note: "" },
@@ -31,7 +30,6 @@ const monthTabsEntreEl = document.getElementById("monthTabsEntre");
 
 const summaryStatsEl = document.getElementById("summaryStats");
 const yearlyChartEl = document.getElementById("yearlyChart");
-const summaryProjectsEl = document.getElementById("summaryProjects");
 const funBalanceEl = document.getElementById("funBalance");
 const invoiceBodyEl = document.getElementById("invoiceBody");
 const settlementBodyEl = document.getElementById("settlementBody");
@@ -72,15 +70,6 @@ function bindEvents() {
       persist();
       render();
     });
-  });
-
-  summaryProjectsEl?.addEventListener("click", (event) => {
-    const btn = event.target.closest("button[data-summary-id]");
-    if (!btn) return;
-    const id = btn.dataset.summaryId;
-    state.summaryOpen[id] = !state.summaryOpen[id];
-    persist();
-    renderSummaryProjects();
   });
 
   document.getElementById("toggleInvoiceEditBtn").addEventListener("click", () => {
@@ -148,7 +137,7 @@ function bindEvents() {
     else item[field] = value;
     if (field === "paymentMode" && item.paymentMode === "Peşin") item.installments = [];
     if (field === "paymentMode" && item.paymentMode === "Taksitli" && !(item.installments || []).length) {
-      item.installments = [{ id: uid(), date: "", amount: 0, note: "" }];
+      item.installments = [{ id: uid(), amount: 0, status: "Pendiente", note: "" }];
       state.installmentOpen[item.id] = true;
     }
     if (field === "baseAmount" && !item.totalAmount) item.totalAmount = round2(item.baseAmount * VAT_RATE);
@@ -195,7 +184,7 @@ function bindEvents() {
       const item = state.invoices.find((x) => x.id === addBtn.dataset.addInstallment);
       if (!item) return;
       item.installments = item.installments || [];
-      item.installments.push({ id: uid(), date: "", amount: 0, note: "" });
+      item.installments.push({ id: uid(), amount: 0, status: "Pendiente", note: "" });
       state.installmentOpen[item.id] = true;
       persist();
       renderInvoices();
@@ -210,6 +199,7 @@ function bindEvents() {
       const item = state.invoices.find((x) => x.id === rowId);
       if (!item) return;
       item.installments = (item.installments || []).filter((x) => x.id !== insId);
+      if (!(item.installments || []).length) state.installmentOpen[item.id] = false;
       persist();
       renderInvoices();
       await upsertInvoice(item);
@@ -311,44 +301,7 @@ function renderSummary() {
     </div>
   `;
 
-  renderSummaryProjects();
   renderFunBalance();
-}
-
-function renderSummaryProjects() {
-  if (!summaryProjectsEl) return;
-  const projects = [...state.invoices]
-    .sort((a, b) => (b.issueDate || "").localeCompare(a.issueDate || ""))
-    .slice(0, 8);
-
-  if (!projects.length) {
-    summaryProjectsEl.innerHTML = `<div class="summary-empty">Aún no hay proyectos con facturas.</div>`;
-    return;
-  }
-
-  summaryProjectsEl.innerHTML = projects.map((item) => {
-    const isOpen = Boolean(state.summaryOpen[item.id]);
-    const mode = item.paymentMode || "Peşin";
-    const installments = item.installments || [];
-    const totalInstallments = sum(installments, "amount");
-    const details = mode === "Taksitli"
-      ? `<div class="summary-installments ${isOpen ? "open" : ""}">
-          ${installments.length
-            ? installments.map((ins, idx) => `<div class="summary-installment-row"><span>${idx + 1}. cuota</span><span>${ins.date || "-"}</span><strong>${money(ins.amount)}</strong></div>`).join("")
-            : `<div class="summary-installment-row"><span>Sin cuotas cargadas</span><span></span><strong>${money(0)}</strong></div>`
-          }
-          <div class="summary-installment-total">Total cuotas: ${money(totalInstallments)}</div>
-        </div>`
-      : "";
-    return `<article class="summary-project">
-      <button class="summary-project-head" type="button" data-summary-id="${item.id}">
-        <span class="summary-project-name">${esc(item.client || item.invoiceNo || "Proyecto")}</span>
-        <span class="summary-project-mode">${mode}</span>
-        <span class="summary-project-arrow">${isOpen ? "▲" : "▼"}</span>
-      </button>
-      ${details}
-    </article>`;
-  }).join("");
 }
 
 function renderFunBalance() {
@@ -421,7 +374,9 @@ function renderInvoices() {
 
   invoiceBodyEl.innerHTML = rows.map((item, idx) => {
     const mode = item.paymentMode || "Peşin";
+    const installments = item.installments || [];
     const isInstallment = mode === "Taksitli";
+    const hasInstallments = installments.length > 0;
     const isOpen = Boolean(state.installmentOpen[item.id]);
     const saldo = round2(num(item.totalAmount) - num(item.paidAmount));
     const mainRow = `<tr data-id="${item.id}">
@@ -438,7 +393,7 @@ function renderInvoices() {
         state.editInvoices
           ? `<select data-field="paymentMode">${opt(mode, "Peşin")}${opt(mode, "Taksitli")}</select>`
           : `<span class="pay-badge ${isInstallment ? "installment" : "cash"}">${mode}</span>`
-      } ${isInstallment ? `<button type="button" class="mini-toggle" data-toggle-installments="${item.id}">${isOpen ? "Ocultar" : "Cuotas"}</button>` : ""}</td>
+      } ${isInstallment && hasInstallments ? `<button type="button" class="mini-toggle" data-toggle-installments="${item.id}">${isOpen ? "Ocultar" : "Cuotas"}</button>` : ""} ${isInstallment && !hasInstallments && state.editInvoices ? `<button type="button" class="mini-toggle" data-add-installment="${item.id}">+ Cuota</button>` : ""}</td>
       <td>${state.editInvoices ? `<input data-field="paidAmount" type="number" step="0.01" value="${num(item.paidAmount)}">` : `<div class="money-preview">${money(item.paidAmount)}</div>`}</td>
       <td>${money(saldo)}</td>
       <td class="col-notas">${
@@ -448,7 +403,7 @@ function renderInvoices() {
       }</td>
       <td><button class="icon-btn ${state.editInvoices ? "" : "hidden"}" data-del-invoice="${item.id}" type="button" title="Eliminar fila">×</button></td>
     </tr>`;
-    const installmentRows = isInstallment && isOpen
+    const installmentRows = isInstallment && isOpen && hasInstallments
       ? `<tr class="installment-row" data-id="${item.id}">
           <td colspan="14">
             <div class="installment-wrap">
@@ -457,10 +412,10 @@ function renderInvoices() {
                 ${state.editInvoices ? `<button type="button" class="btn alt" data-add-installment="${item.id}">+ Añadir cuota</button>` : ""}
               </div>
               <div class="installment-grid">
-                ${(item.installments || []).map((ins, i) => `<div class="installment-item">
-                  <div class="installment-idx">Cuota ${i + 1}</div>
-                  <input ${disabled} data-installment-id="${ins.id}" data-installment-field="date" type="date" value="${ins.date || ""}">
+                ${installments.map((ins, i) => `<div class="installment-item">
+                  <div class="installment-idx">${i + 1}</div>
                   <input ${disabled} data-installment-id="${ins.id}" data-installment-field="amount" type="number" step="0.01" value="${num(ins.amount)}">
+                  <select ${disabled} data-installment-id="${ins.id}" data-installment-field="status">${opt(ins.status || "Pendiente", "Pendiente")}${opt(ins.status || "Pendiente", "Pagada")}</select>
                   <input ${disabled} data-installment-id="${ins.id}" data-installment-field="note" value="${esc(ins.note || "")}" placeholder="Nota">
                   <button type="button" class="icon-btn ${state.editInvoices ? "" : "hidden"}" data-invoice-id="${item.id}" data-del-installment="${ins.id}">×</button>
                 </div>`).join("")}
@@ -682,7 +637,6 @@ function loadLocalState() {
     const p = JSON.parse(raw);
     const next = { ...structuredClone(DEFAULT_STATE), ...p };
     next.invoices = (next.invoices || []).map(normalizeInvoice);
-    next.summaryOpen = next.summaryOpen || {};
     next.installmentOpen = next.installmentOpen || {};
     return next;
   } catch (_e) { return structuredClone(DEFAULT_STATE); }
@@ -725,7 +679,7 @@ function normalizeInvoice(i) {
     ...i,
     paymentMode: i.paymentMode || "Peşin",
     installments: Array.isArray(i.installments)
-      ? i.installments.map((x) => ({ id: x.id || uid(), date: x.date || "", amount: num(x.amount), note: x.note || "" }))
+      ? i.installments.map((x) => ({ id: x.id || uid(), amount: num(x.amount), status: x.status || "Pendiente", note: x.note || "" }))
       : [],
   };
 }
