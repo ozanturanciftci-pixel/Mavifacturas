@@ -99,25 +99,31 @@ h1 {
 }
 
 .wecan-only {
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 14px;
+  gap: 20px;
   padding: 10px 0 6px;
 }
 
-.wecan-main,
-.nazar-side {
+.wecan-main {
   width: min(100%, 360px);
   height: 300px;
-  object-fit: cover;
+  object-fit: contain;
   background: transparent;
   border: 0;
   box-shadow: none;
+  justify-self: center;
 }
 
 .nazar-side {
-  border-radius: 14px;
+  width: 132px;
+  height: 132px;
+  object-fit: contain;
+  justify-self: center;
+  mix-blend-mode: multiply;
+  opacity: 0.96;
+  filter: drop-shadow(0 4px 10px rgba(12, 44, 122, 0.22));
 }
 
 .transition-photo {
@@ -868,10 +874,13 @@ input[disabled], select[disabled], textarea[disabled] {
   .photo-transition {
     grid-template-columns: 1fr;
   }
-  .wecan-main,
-  .nazar-side {
+  .wecan-main {
     width: min(100%, 310px);
     height: 250px;
+  }
+  .nazar-side {
+    width: 86px;
+    height: 86px;
   }
   .transition-photo,
   .transition-photo.wecan img {
