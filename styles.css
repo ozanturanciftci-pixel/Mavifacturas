@@ -53,9 +53,10 @@ body {
 }
 
 .topbar {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
+  gap: 18px;
 }
 
 .brand-right {
@@ -153,16 +154,6 @@ h2 {
 
 .tabs-wrap, .table-card, .chart-card { padding: 12px; }
 
-.tabs-wrap {
-  background: transparent;
-  border: 0;
-  box-shadow: none;
-  width: var(--panel-width);
-  max-width: var(--panel-width);
-  margin: 0;
-  padding: 2px 0 4px;
-}
-
 .tab-panel > .card {
   width: var(--panel-width);
   max-width: var(--panel-width);
@@ -177,7 +168,9 @@ h2 {
 
 .main-tabs {
   justify-content: flex-start;
-  gap: 14px;
+  gap: 12px;
+  width: 100%;
+  padding-left: 2px;
 }
 
 .main-tab, .month-tab, .btn {
@@ -190,51 +183,29 @@ h2 {
 }
 
 .main-tab {
-  background: transparent;
-  color: #efe4d3;
+  background: rgba(245, 235, 214, 0.2);
+  color: #f5ead5;
   min-height: 38px;
-  padding: 6px 10px;
+  padding: 7px 14px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
   white-space: nowrap;
-  border-color: transparent;
-  border-radius: 10px;
+  border-color: rgba(247, 235, 212, 0.42);
+  border-radius: 999px;
   font-weight: 600;
-  transition: color 0.2s ease, background-color 0.2s ease;
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .main-tab.active {
-  background: transparent;
-  color: #efe4d3;
-  border-color: transparent;
-  box-shadow: none;
+  background: rgba(245, 235, 214, 0.24);
+  color: #f7ecda;
+  border-color: rgba(247, 235, 212, 0.5);
 }
 
 .main-tab:hover {
   color: #7ec3ff;
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.tab-icon-wrap {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  gap: 4px;
-}
-
-.tab-eye-icon {
-  width: 20px;
-  height: auto;
-}
-
-.tab-eye-icon-dark {
-  filter: brightness(0) saturate(100%) invert(14%) sepia(75%) saturate(1960%) hue-rotate(208deg) brightness(92%) contrast(101%);
-}
-
-.tab-emoji {
-  line-height: 1;
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(118, 186, 255, 0.62);
 }
 
 .tab-label {
@@ -296,7 +267,7 @@ h2 {
   position: relative;
   z-index: 1;
   width: var(--panel-width);
-  margin: 8px auto 26px;
+  margin: 18px auto 26px;
   background: #e5e6ea;
   border-radius: 18px;
   box-shadow: var(--shadow);
